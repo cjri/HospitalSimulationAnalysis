@@ -24,3 +24,5 @@ Ward number  Intervention start (day)  Intervention end (day)
 
 
 The file FindInterventionWindows.nb is a Mathematica worksheet that was used to generate the ward detection windows provided in the Data directory.
+
+Full simulation data will be made available upon the publication of a manuscript accompanying this code.
