@@ -1,7 +1,7 @@
 # HospitalSimulationAnalysis
 Code for analysing simulated data describing nosocomial infection in hospitals
 
-This repository contains code to analyse simulated data describing nosocomial transmission in hospitals.  The code is written in C++ and can be compiled with a make command.
+This repository contains code to analyse simulated data describing nosocomial transmission in hospitals, modelling an intervention in which UDCA was given to patients on a ward following the detection of a case of infection.  The code is written in C++ and can be compiled with a make command.
 
 In compiling this code note that:
   The code makes use of the GSL library.  You will need to have this installed on your machine.
@@ -15,7 +15,7 @@ In brief, the script iterates over running the code on sumulations 1 to 180, den
 
 Scripts run the code for an intervention length of between 6 and 14 days.
 
-The file Intervention10.tar.gz contains the outputs of running the code for a 10-day intervention.
+The files in the Intervention10 directory contains the outputs of five replicate runs of the code for simulated data given a 10-day intervention.
 
 
 The folder /Data contains information of where in each hospital the intervention took place.  The format is
