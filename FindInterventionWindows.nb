@@ -1,0 +1,450 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[     17500,        442]
+NotebookOptionsPosition[     17054,        427]
+NotebookOutlinePosition[     17449,        443]
+CellTagsIndexPosition[     17406,        440]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ StyleBox[
+  RowBox[{"Repeat", " ", "using", " ", "only", " ", "patient", " ", "data"}], 
+  "Section"]], "Input",
+ CellChangeTimes->{{3.93315768325928*^9, 
+  3.933157691402484*^9}},ExpressionUUID->"3f510c9b-702c-49f7-bd3f-\
+238cc8739206"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"intervention", "=", "10"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Monitor", "[", 
+   RowBox[{
+    RowBox[{"For", "[", 
+     RowBox[{
+      RowBox[{"s", "=", "1"}], ",", 
+      RowBox[{"s", "<=", "180"}], ",", 
+      RowBox[{"s", "++"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Clear", "[", "pats", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"pats", "=", 
+        RowBox[{
+         RowBox[{"Import", "[", 
+          RowBox[{
+           RowBox[{
+           "\"\</Users/christopher.illingworth/Documents/Coronavirus/\
+Simulation/StephData/patient_data/\>\"", "<>", "\"\<pat_data_full_stay\>\"", "<>", 
+            RowBox[{"ToString", "[", "s", "]"}], "<>", "\"\<.csv\>\""}], ",", 
+           "\"\<CSV\>\""}], "]"}], "[", 
+         RowBox[{"[", 
+          RowBox[{"2", ";;"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{"Fix", " ", "dates", " ", "of", " ", "events"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"For", "[", 
+        RowBox[{
+         RowBox[{"i", "=", "1"}], ",", 
+         RowBox[{"i", "<=", 
+          RowBox[{"Length", "[", "pats", "]"}]}], ",", 
+         RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"pats", "[", 
+            RowBox[{"[", 
+             RowBox[{"i", ",", "2"}], "]"}], "]"}], "=", 
+           RowBox[{"StringSplit", "[", 
+            RowBox[{
+             RowBox[{"pats", "[", 
+              RowBox[{"[", 
+               RowBox[{"i", ",", "2"}], "]"}], "]"}], ",", "\"\<-\>\""}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"pats", "[", 
+            RowBox[{"[", 
+             RowBox[{"i", ",", "2"}], "]"}], "]"}], "=", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"ToExpression", "[", 
+              RowBox[{"pats", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "2", ",", "j"}], "]"}], "]"}], "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"j", ",", "1", ",", "3"}], "}"}]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"pats", "[", 
+            RowBox[{"[", 
+             RowBox[{"i", ",", "2"}], "]"}], "]"}], "=", 
+           RowBox[{
+            RowBox[{"AbsoluteTime", "[", 
+             RowBox[{"DateObject", "[", 
+              RowBox[{"pats", "[", 
+               RowBox[{"[", 
+                RowBox[{"i", ",", "2"}], "]"}], "]"}], "]"}], "]"}], "/", 
+            "86400"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"pats", "[", 
+         RowBox[{"[", 
+          RowBox[{";;", ",", "2"}], "]"}], "]"}], "=", 
+        RowBox[{
+         RowBox[{"pats", "[", 
+          RowBox[{"[", 
+           RowBox[{";;", ",", "2"}], "]"}], "]"}], "-", "43887"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"allpatids", "=", 
+        RowBox[{"DeleteDuplicates", "[", 
+         RowBox[{"pats", "[", 
+          RowBox[{"[", 
+           RowBox[{";;", ",", "3"}], "]"}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"npats", "=", 
+        RowBox[{"Length", "[", "allpatids", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"ipats", "=", 
+        RowBox[{"ParallelTable", "[", 
+         RowBox[{
+          RowBox[{"Select", "[", 
+           RowBox[{"pats", ",", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"#", "[", 
+               RowBox[{"[", "3", "]"}], "]"}], "==", 
+              RowBox[{"allpatids", "[", 
+               RowBox[{"[", "i", "]"}], "]"}]}], "&"}]}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", "npats"}], "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"ipdetect", "=", 
+        RowBox[{"Select", "[", 
+         RowBox[{
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"Select", "[", 
+             RowBox[{
+              RowBox[{"ipats", "[", 
+               RowBox[{"[", "i", "]"}], "]"}], ",", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"#", "[", 
+                 RowBox[{"[", "12", "]"}], "]"}], "==", "\"\<TRUE\>\""}], 
+               "&"}]}], "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", "1", ",", "npats"}], "}"}]}], "]"}], ",", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Length", "[", "#", "]"}], ">", "0"}], "&"}]}], "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "First", " ", "detection", " ", "for", " ", "each", " ", 
+         "individual"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"ipdetect", "=", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"ipdetect", "[", 
+           RowBox[{"[", 
+            RowBox[{"i", ",", "1"}], "]"}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", 
+            RowBox[{"Length", "[", "ipdetect", "]"}]}], "}"}]}], "]"}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Add", " ", "flag", " ", "for", " ", "whether", " ", "this", " ", 
+         "has", " ", "been", " ", "accounted", " ", "for"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"ipdetect", "=", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"Join", "[", 
+           RowBox[{
+            RowBox[{"ipdetect", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], ",", 
+            RowBox[{"{", "0", "}"}]}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", 
+            RowBox[{"Length", "[", "ipdetect", "]"}]}], "}"}]}], "]"}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"ipdetect", "=", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"Join", "[", 
+           RowBox[{
+            RowBox[{"{", "i", "}"}], ",", 
+            RowBox[{"ipdetect", "[", 
+             RowBox[{"[", "i", "]"}], "]"}]}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", 
+            RowBox[{"Length", "[", "ipdetect", "]"}]}], "}"}]}], "]"}]}], ";",
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"alldetections", "=", 
+        RowBox[{"ipdetect", "[", 
+         RowBox[{"[", 
+          RowBox[{";;", ",", 
+           RowBox[{"{", 
+            RowBox[{"7", ",", "3"}], "}"}]}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"alldetections", "=", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"Join", "[", 
+           RowBox[{
+            RowBox[{"alldetections", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], ",", 
+            RowBox[{"{", "0", "}"}]}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", 
+            RowBox[{"Length", "[", "alldetections", "]"}]}], "}"}]}], "]"}]}],
+        ";", "\[IndentingNewLine]", 
+       RowBox[{"alldetections", "=", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"Join", "[", 
+           RowBox[{
+            RowBox[{"{", "i", "}"}], ",", 
+            RowBox[{"alldetections", "[", 
+             RowBox[{"[", "i", "]"}], "]"}]}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", 
+            RowBox[{"Length", "[", "alldetections", "]"}]}], "}"}]}], "]"}]}],
+        ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"tot", "=", 
+        RowBox[{"Total", "[", 
+         RowBox[{"alldetections", "[", 
+          RowBox[{"[", 
+           RowBox[{";;", ",", 
+            RowBox[{"-", "1"}]}], "]"}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"warddata", "=", 
+        RowBox[{"ConstantArray", "[", 
+         RowBox[{"0", ",", "10000"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"index", "=", "1"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"While", "[", 
+        RowBox[{
+         RowBox[{"tot", "<", 
+          RowBox[{"Length", "[", "alldetections", "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"first", "=", 
+           RowBox[{
+            RowBox[{"Select", "[", 
+             RowBox[{"alldetections", ",", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"#", "[", 
+                 RowBox[{"[", "4", "]"}], "]"}], "==", "0"}], "&"}]}], "]"}], 
+            "[", 
+            RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"firstw", "=", 
+           RowBox[{"first", "[", 
+            RowBox[{"[", "2", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"wcases", "=", 
+           RowBox[{"Select", "[", 
+            RowBox[{"alldetections", ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"#", "[", 
+                RowBox[{"[", "2", "]"}], "]"}], "==", "firstw"}], "&"}]}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"set", "=", 
+           RowBox[{"{", 
+            RowBox[{"first", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], "}"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"len", "=", "1"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"oldlen", "=", "0"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"While", "[", 
+           RowBox[{
+            RowBox[{"len", ">", "oldlen"}], ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"oldlen", "=", "len"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"new", "=", 
+              RowBox[{"Partition", "[", 
+               RowBox[{
+                RowBox[{"Flatten", "[", 
+                 RowBox[{"Table", "[", 
+                  RowBox[{
+                   RowBox[{"Select", "[", 
+                    RowBox[{"wcases", ",", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Abs", "[", 
+                    RowBox[{
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "3", "]"}], "]"}], "-", 
+                    RowBox[{"alldetections", "[", 
+                    RowBox[{"[", 
+                    RowBox[{
+                    RowBox[{"set", "[", 
+                    RowBox[{"[", "j", "]"}], "]"}], ",", "3"}], "]"}], 
+                    "]"}]}], "]"}], "<=", "10"}], "&"}]}], "]"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{"j", ",", "1", ",", 
+                    RowBox[{"Length", "[", "set", "]"}]}], "}"}]}], "]"}], 
+                 "]"}], ",", "4"}], "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"new", "=", 
+              RowBox[{"DeleteDuplicates", "[", "new", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"len", "=", 
+              RowBox[{"Length", "[", "new", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"set", "=", 
+              RowBox[{"new", "[", 
+               RowBox[{"[", 
+                RowBox[{";;", ",", "1"}], "]"}], "]"}]}], ";"}]}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"mmax", "=", 
+           RowBox[{"{", 
+            RowBox[{"firstw", ",", "1000", ",", 
+             RowBox[{"-", "1000"}]}], "}"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"For", "[", 
+           RowBox[{
+            RowBox[{"j", "=", "1"}], ",", 
+            RowBox[{"j", "<=", 
+             RowBox[{"Length", "[", "set", "]"}]}], ",", 
+            RowBox[{"j", "++"}], ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"alldetections", "[", 
+               RowBox[{"[", 
+                RowBox[{
+                 RowBox[{"set", "[", 
+                  RowBox[{"[", "j", "]"}], "]"}], ",", "4"}], "]"}], "]"}], 
+              "=", "1"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{"Print", "[", 
+                RowBox[{"ipdetect", "[", 
+                 RowBox[{"[", 
+                  RowBox[{
+                   RowBox[{"set", "[", 
+                    RowBox[{"[", "j", "]"}], "]"}], ",", "3"}], "]"}], "]"}], 
+                "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"alldetections", "[", 
+                 RowBox[{"[", 
+                  RowBox[{
+                   RowBox[{"set", "[", 
+                    RowBox[{"[", "j", "]"}], "]"}], ",", "3"}], "]"}], "]"}], 
+                "<", 
+                RowBox[{"mmax", "[", 
+                 RowBox[{"[", "2", "]"}], "]"}]}], ",", 
+               RowBox[{
+                RowBox[{"mmax", "[", 
+                 RowBox[{"[", "2", "]"}], "]"}], "=", 
+                RowBox[{"alldetections", "[", 
+                 RowBox[{"[", 
+                  RowBox[{
+                   RowBox[{"set", "[", 
+                    RowBox[{"[", "j", "]"}], "]"}], ",", "3"}], "]"}], 
+                 "]"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"alldetections", "[", 
+                 RowBox[{"[", 
+                  RowBox[{
+                   RowBox[{"set", "[", 
+                    RowBox[{"[", "j", "]"}], "]"}], ",", "3"}], "]"}], "]"}], 
+                ">", 
+                RowBox[{"mmax", "[", 
+                 RowBox[{"[", "3", "]"}], "]"}]}], ",", 
+               RowBox[{
+                RowBox[{"mmax", "[", 
+                 RowBox[{"[", "3", "]"}], "]"}], "=", 
+                RowBox[{"alldetections", "[", 
+                 RowBox[{"[", 
+                  RowBox[{
+                   RowBox[{"set", "[", 
+                    RowBox[{"[", "j", "]"}], "]"}], ",", "3"}], "]"}], 
+                 "]"}]}]}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";",
+           "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"mmax", "[", 
+            RowBox[{"[", "3", "]"}], "]"}], "=", 
+           RowBox[{
+            RowBox[{"mmax", "[", 
+             RowBox[{"[", "3", "]"}], "]"}], "+", "intervention"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"warddata", "[", 
+            RowBox[{"[", "index", "]"}], "]"}], "=", "mmax"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"index", "++"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"tot", "=", 
+           RowBox[{"Total", "[", 
+            RowBox[{"alldetections", "[", 
+             RowBox[{"[", 
+              RowBox[{";;", ",", 
+               RowBox[{"-", "1"}]}], "]"}], "]"}], "]"}]}], ";"}]}], 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"Print", "[", "mmax", "]"}], ";"}], "*)"}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"wardoutbreaks", "=", 
+        RowBox[{"Select", "[", 
+         RowBox[{"warddata", ",", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Length", "[", "#", "]"}], ">", "1"}], "&"}]}], "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"Export", "[", 
+        RowBox[{
+         RowBox[{
+         "\"\</Users/christopher.illingworth/Documents/Coronavirus/Simulation/\
+UDCA_Project/WriteupCI/Data/Ward_detection_windows_patient_only\>\"", "<>", 
+          RowBox[{"ToString", "[", "s", "]"}], "<>", "\"\<_\>\"", "<>", 
+          RowBox[{"ToString", "[", "intervention", "]"}], "<>", 
+          "\"\<.dat\>\""}], ",", "wardoutbreaks"}], "]"}], ";"}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "s"}], "]"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.932823487594865*^9, 3.9328235693512983`*^9}, {
+   3.932824800427541*^9, 3.932824802643848*^9}, {3.932824833450675*^9, 
+   3.932824840948778*^9}, {3.932825477946144*^9, 3.932825518538991*^9}, {
+   3.932825581530048*^9, 3.932825640090527*^9}, {3.932826091244252*^9, 
+   3.932826098955805*^9}, {3.9330668446814623`*^9, 3.933066844798086*^9}, 
+   3.933118814078752*^9, {3.933119220798275*^9, 3.933119222695829*^9}, {
+   3.9331579382507277`*^9, 3.9331579981932592`*^9}, {3.937045229125412*^9, 
+   3.9370452345407953`*^9}, {3.9404878126536617`*^9, 
+   3.9404878706366653`*^9}, {3.940487901895177*^9, 3.9404879178136053`*^9}},
+ CellLabel->
+  "In[333]:=",ExpressionUUID->"fd448291-1ec2-4dad-9687-b3876bf3dfc0"]
+},
+WindowSize->{808, 911},
+WindowMargins->{{Automatic, 238}, {Automatic, 136}},
+FrontEndVersion->"14.1 for Mac OS X ARM (64-bit) (July 16, 2024)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"594e09b9-7236-4568-824b-363f49580d21"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[554, 20, 252, 6, 48, "Input",ExpressionUUID->"3f510c9b-702c-49f7-bd3f-238cc8739206"],
+Cell[809, 28, 16241, 397, 1397, "Input",ExpressionUUID->"fd448291-1ec2-4dad-9687-b3876bf3dfc0"]
+}
+]
+*)
+
