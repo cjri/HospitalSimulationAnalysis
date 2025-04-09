@@ -23,7 +23,7 @@ Cluster_sizes.dat: Contains the number of individuals in each SARS-CoV-2 outbrea
 RunX.out: The output of the model.  The critical lines here are the final two, which detail
 #Nosocomial patient infections (original) 	#Nosocomial patient infections (intervention) #Percentage remaining
 #Nosocomial HCW infections (original) 	#Nosocomial HCW infections (intervention) #Percentage remaining
-=======
+
 The files in the Intervention10 directory contains the outputs of five replicate runs of the code for simulated data given a 10-day intervention.
 
 
