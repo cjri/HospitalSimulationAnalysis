@@ -1,7 +1,7 @@
 # HospitalSimulationAnalysis
 Code for analysing simulated data describing nosocomial infection in hospitals
 
-This repository contains code to analyse simulated data describing nosocomial transmission in hospitals.  The code is written in C++ and can be compiled with a make command.
+This repository contains code to analyse simulated data describing nosocomial transmission in hospitals, modelling an intervention in which UDCA was given to patients on a ward following the detection of a case of infection.  The code is written in C++ and can be compiled with a make command.
 
 In compiling this code note that:
   The code makes use of the GSL library.  You will need to have this installed on your machine.
@@ -23,6 +23,8 @@ Cluster_sizes.dat: Contains the number of individuals in each SARS-CoV-2 outbrea
 RunX.out: The output of the model.  The critical lines here are the final two, which detail
 #Nosocomial patient infections (original) 	#Nosocomial patient infections (intervention) #Percentage remaining
 #Nosocomial HCW infections (original) 	#Nosocomial HCW infections (intervention) #Percentage remaining
+=======
+The files in the Intervention10 directory contains the outputs of five replicate runs of the code for simulated data given a 10-day intervention.
 
 
 The folder /Data contains information of where in each hospital the intervention took place.  File names are in the format:
@@ -35,3 +37,5 @@ Ward number  Intervention start (day)  Intervention end (day)
 
 
 The file FindInterventionWindows.nb is a Mathematica worksheet that was used to generate the ward detection windows provided in the Data directory.
+
+Full simulation data will be made available upon the publication of a manuscript accompanying this code.
